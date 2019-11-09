@@ -1,6 +1,9 @@
+$bg-color: #e0dacf;
+
 body {
   display: flex;
   justify-content: center;
+  background: $bg-color;
 }
 
 .main {

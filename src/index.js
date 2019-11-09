@@ -1,3 +1,5 @@
+import './scss/base.scss'
+
 function getCityData(city) {
     return fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=5c421a898af8f8f0d9a04eb07a32545d&units=metric`)
         .then(data => data.json())
@@ -20,7 +22,7 @@ function getCityData(city) {
 function update() {
     getCityData(document.getElementById('form-input').value)
         .then(context => {
-            var source;
+            let source;
             if (context == null)
                 source = document.getElementById('entry-template-on-error').innerHTML;
             else
@@ -28,4 +30,8 @@ function update() {
             const template = Handlebars.compile(source);
             document.getElementById('result').innerHTML = template(context);
         })
+}
+
+document.getElementById("search").onclick = function () {
+    update();
 }
