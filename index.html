@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CityWeather</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
+    <link rel='stylesheet' href='./src/scss/base.scss'>
+
+    <script id="entry-template" type="text/x-handlebars-template">
+        <div class="main-form">
+            <h1 class="city">{{city}}</h1>
+            <h2 class="info">
+                {{weather}}
+            </h2>
+        </div>
+        <ul class="list-info">
+            <li class="list-item">date: {{date}}</li>
+            <li class="list-item">temperature: {{temperature}}</li>
+            <li class="list-item">humidity: {{humidity}}</li>
+            <li class="list-item">pressure: {{pressure}}</li>
+            <li class="list-item">wind: {{wind}}</li>
+        </ul>
+    </script>
+
+    <script id="entry-template-on-error" type="text/x-handlebars-template">
+        <div class="main-form">
+            <h1 class="message">Incorrect city</h1>
+        </div>
+    </script>
+</head>
+<body>
+<main class="main">
+    <div class="search">
+        <form action="#" onsubmit="update()">
+            <input type="text" id="form-input" class="submit-input" value="Kiev">
+            <input type="submit" class="submit-button" value="submit">
+        </form>
+    </div>
+    <div id="result" class="weather"></div>
+</main>
+
+    <script type="text/javascript" src="./src/index.js"></script>
+</body>
+</html>
