@@ -1,1 +1,1 @@
-body{display:flex;justify-content:center;background:#e0dacf}.main{display:flex;flex-direction:column;align-items:center}.submit-button{background-color:mediumslateblue;padding:10px 15px;border-radius:100px;border:none;font-size:16px;font-weight:bold}
+body{display:flex;justify-content:center;background:#dde3ff}.main{display:flex;flex-direction:column;align-items:center}.submit-button{background-color:#8072d2;padding:10px 15px;border-radius:100px;border:none;font-size:16px;font-weight:bold}.list-item-name{display:inline;font-style:italic;font-size:125%}

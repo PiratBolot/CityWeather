@@ -1,4 +1,5 @@
-$bg-color: #e0dacf;
+$bg-color: #dde3ff;
+$btn-color: #8072d2;
 
 body {
   display: flex;
@@ -13,10 +14,16 @@ body {
 }
 
 .submit-button {
-  background-color: mediumslateblue;
+  background-color: $btn-color;
   padding: 10px 15px;
   border-radius: 100px;
   border: none;
   font-size: 16px;
   font-weight: bold;
+}
+
+.list-item-name {
+  display: inline;
+  font-style: italic;
+  font-size: 125%;
 }
