@@ -1,7 +1,9 @@
+$bg-color: pink;
+
 body {
   display: flex;
   justify-content: center;
-  background-color: cadetblue;
+  background-color: $bg-color;
 }
 
 .main {

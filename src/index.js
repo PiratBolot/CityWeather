@@ -1,5 +1,3 @@
-
-
 function getCityData(city) {
     return fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=5c421a898af8f8f0d9a04eb07a32545d&units=metric`)
         .then(data => data.json())
