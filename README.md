@@ -1,5 +1,9 @@
 ## Lab 1
 
-1. Install node.js
-2. `npm install node-sass -g`
-3. `node-sass style.scss style.css`
+To built project run:
+
+    npm install
+    npm run build
+To run development server:
+
+    npm start
