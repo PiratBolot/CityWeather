@@ -3,7 +3,7 @@ import './scss/base.scss'
 function getCityData(city) {
     return fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=5c421a898af8f8f0d9a04eb07a32545d&units=metric`)
         .then(data => {
-            return data.json()
+            return data.json();
         })
         .catch(reason => {
             return null;
@@ -11,8 +11,15 @@ function getCityData(city) {
 }
 
 function formatData(data) {
+    if (data === null) {
+        return {
+            message: "Request failed"
+        }
+    }
     if (data.cod !== "200") {
-        return null;
+        return {
+            message: "Incorrect city"
+        }
     }
     const first = data.list[0];
     return {
@@ -29,7 +36,7 @@ function update(event) {
     getCityData(event.target['form-input'].value)
         .then(context => {
             let source;
-            if (context.cod !== "200")
+            if (context === null || context.cod !== "200")
                 source = document.getElementById('entry-template-on-error').innerHTML;
             else
                 source = document.getElementById('entry-template').innerHTML;
