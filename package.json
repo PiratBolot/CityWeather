@@ -10,10 +10,14 @@
   "author": "Roman Kapustin",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^0.19.0",
+    "chai": "^4.2.0",
     "css-loader": "^3.2.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "mocha": "^6.2.2",
     "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
+    "sinon": "^7.5.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"

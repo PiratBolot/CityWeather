@@ -7,21 +7,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
     <link rel='stylesheet' href='dist/style.css'>
 
-    <script id="entry-template" type="text/x-handlebars-template">
-        <div class="main-form">
-            <h1 class="city">{{city}}</h1>
+    <script id="entry_template_result" type="text/x-handlebars-template">
+        <div>
+            <h1 class="city_name">{{city}}</h1>
         </div>
-        <ul class="list-info">
-            <li class="list-item"><p class="list-item-name">date:</p> {{date}}</li>
-            <li class="list-item"><p class="list-item-name">temperature:</p> {{temperature}}</li>
-            <li class="list-item"><p class="list-item-name">humidity:</p> {{humidity}}</li>
-            <li class="list-item"><p class="list-item-name">pressure:</p> {{pressure}}</li>
-            <li class="list-item"><p class="list-item-name">wind:</p> {{wind}}</li>
+        <ul class="weather_info">
+            <li class="list_item"><p class="list_item_name">date:</p> {{date}}</li>
+            <li class="list_item"><p class="list_item_name">temperature:</p> {{temperature}}</li>
+            <li class="list_item"><p class="list_item_name">humidity:</p> {{humidity}}</li>
+            <li class="list_item"><p class="list_item_name">pressure:</p> {{pressure}}</li>
+            <li class="list_item"><p class="list_item_name">wind:</p> {{wind}}</li>
         </ul>
     </script>
 
-    <script id="entry-template-on-error" type="text/x-handlebars-template">
-        <div class="main-form">
+    <script id="entry_template_on_error" type="text/x-handlebars-template">
+        <div>
             <h1 class="message">{{message}}</h1>
         </div>
     </script>
@@ -29,9 +29,9 @@
 <body>
     <main class="main">
         <div class="search">
-            <form id="search-form" action="#">
-                <input type="text" id="form-input" class="submit-input" value="Kiev">
-                <input id="search" type="submit" class="submit-button" value="submit">
+            <form id="search_form" action="#">
+                <input type="text" id="form_input" class="submit_input" value="Kiev">
+                <input id="search" type="submit" class="submit_button" value="submit">
             </form>
         </div>
         <div id="result" class="weather"></div>
