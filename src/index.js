@@ -1,6 +1,3 @@
-import './scss/base.scss'
-import axios from 'axios';
-
 const API_KEY = "5c421a898af8f8f0d9a04eb07a32545d";
 
 function getCityData(city) {
@@ -22,11 +19,10 @@ function getCityData(city) {
         });
 }
 
-function formatData(data) {
+const formatData = (data) => {
     const first = data.list[0];
     return {
         city: data.city.name,
-        date: Date(first.dt),
         temperature: `${first.main.temp} C`,
         humidity: `${first.main.humidity} %`,
         pressure: `${first.main.pressure} hPa`,
@@ -53,6 +49,67 @@ async function update(event) {
     const template = Handlebars.compile(source);
     document.getElementById('result').innerHTML = template(compileTemplate(cityWeather));
 }
+
+const responseExample = () => ({
+    "city": {
+        "coord": {
+            "lat": 61.669,
+            "lon": 50.835
+        },
+        "country": "RU",
+        "id": 485239,
+        "name": "Syktyvkar",
+        "population": 230139,
+        "sunrise": 1575697086,
+        "sunset": 1575717481,
+        "timezone": 10800
+    },
+    "cnt": 40,
+    "cod": "200",
+    "list": [
+        {
+            "clouds": {
+                "all": 94
+            },
+            "dt": 1575730800,
+            "dt_txt": "2019-12-07 15:00:00",
+            "main": {
+                "grnd_level": 980,
+                "humidity": 98,
+                "pressure": 998,
+                "sea_level": 998,
+                "temp": -0.4,
+                "temp_kf": 0.04,
+                "temp_max": -0.4,
+                "temp_min": -0.44
+            },
+            "snow": {
+                "3h": 0.5
+            },
+            "sys": {"pod": "n"},
+            "weather": [
+                {
+                    "description": "light snow",
+                    "icon": "13n",
+                    "id": 600,
+                    "main": "Snow"
+                },
+            ],
+            "wind": {
+                "deg": 210,
+                "speed": 2.82
+            }
+        }
+    ]
+});
+
+const formattedResponse = () => ({
+    city: "Syktyvkar",
+    temperature: "-0.4 C",
+    humidity: "98 %",
+    pressure: "998 hPa",
+    wind: "2.82 meter/sec",
+});
 
 document.getElementById("search_form").addEventListener('submit',  async event => {
     event.preventDefault();

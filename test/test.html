@@ -1,0 +1,31 @@
+<!doctype>
+<html>
+<head>
+    <title>Test</title>
+    <meta charset="utf-8">
+    <script src="../src/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
+    <!--Testing-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/6.2.1/mocha.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/6.2.1/mocha.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/7.5.0/sinon.min.js"></script>
+
+</head>
+<body>
+<div id="mocha"></div>
+<script>
+    expect = chai.expect;
+
+    describe("formatData", function () {
+        it('formatData', function () {
+            let testResponse = formatData(responseExample());
+            expect(testResponse).to.eql(formattedResponse());
+        });
+    });
+
+    mocha.run();
+</script>
+</body>
+</html>

@@ -1,6 +1,5 @@
-const chai = require('chai');
-const formatData = require('../src/index');
-const mocha = require('mocha');
+import {formatData} from "../src/index.js";
+
 
 const responseExample = {
     "city": {
@@ -64,10 +63,10 @@ const formattedResponse = {
     wind: "2.54 meter/sec",
 };
 
-mocha.describe("formatData", function () {
-    mocha.it('formatData', function () {
+describe("formatData", function () {
+    it('formatData', function () {
         let testResponse = formatData(responseExample);
-        expect(testResponse).to.eql(formattedResponse);
+        chai.expect(testResponse).to.eql(formattedResponse);
     });
 });
 
