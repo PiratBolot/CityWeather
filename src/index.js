@@ -40,7 +40,6 @@ function compileTemplate(weather) {
 async function update(event) {
     let cityName = event.target['form_input'].value;
     let cityWeather = await getCityData(cityName);
-    console.log(cityWeather);
     let source;
     if (cityWeather.status === 200) {
         source = document.getElementById('entry_template_result').innerHTML;
@@ -51,7 +50,10 @@ async function update(event) {
     document.getElementById('result').innerHTML = template(compileTemplate(cityWeather));
 }
 
-document.getElementById("search_form").addEventListener('submit',  async event => {
-    event.preventDefault();
-    await update(event)
-});
+window.onload = () => {
+    document.getElementById("search_form").addEventListener('submit',  async event => {
+        event.preventDefault();
+        await update(event)
+    });
+};
+
