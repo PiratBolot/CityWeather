@@ -48,19 +48,19 @@
     expect = chai.expect;
 
     describe("formatData", function () {
-        it('formatData works correctly', function () {
+        it('should work correctly', function () {
             let testResponse = formatData(dataExample());
             expect(testResponse).to.eql(formattedResponse());
         });
     });
 
     describe("compileTemplate", function () {
-        it('weather.status === 200', function () {
+        it('should return a formatted response if weather.status === 200', function () {
             let testResponse = compileTemplate(fullExample());
             expect(testResponse).to.eql(formattedResponse());
         });
 
-        it('weather.status !== 200', function () {
+        it('should return error response if weather.status !== 200', function () {
             let testResponse = compileTemplate(errorExample());
             expect(testResponse).to.eql(errorResponse());
         });
@@ -71,7 +71,7 @@
         beforeEach(() => sandbox = sinon.createSandbox());
         afterEach(() => sandbox.restore());
 
-        it('Syktyvkar', function (done) {
+        it('should successfully return data for Syktyvkar', function (done) {
             const response = fullExample();
             const resolved = new Promise((r) => r(response));
             sandbox.stub(axios, 'get').returns(resolved);
@@ -83,7 +83,7 @@
                 .then(done, done);
         });
 
-        it('Empty request', function (done) {
+        it('should handle the empty request option', function (done) {
             const response = nothingToGeocodeData();
             const rejected = new Promise((_, r) => r({ response: response }));
             sandbox.stub(axios, 'get').returns(rejected);
@@ -95,7 +95,7 @@
                 .then(done, done);
         });
 
-        it('City ​​not found', function (done) {
+        it('should handle the city ​​not found option', function (done) {
             const response = cityNotFoundData();
             const rejected = new Promise((_, r) => r({ response: response }));
             sandbox.stub(axios, 'get').returns(rejected);
@@ -107,7 +107,7 @@
                 .then(done, done);
         });
 
-        it('Invalid API key', function (done) {
+        it('should handle the invalid API key option', function (done) {
             const response = invalidApiKeyData();
             const rejected = new Promise((_, r) => r({response: response}));
             sandbox.stub(axios, 'get').returns(rejected);
@@ -119,7 +119,7 @@
                 .then(done, done);
         });
 
-        it('Network error', function (done) {
+        it('should handle the Network error option', function (done) {
             const response = networkErrorData();
             const rejected = new Promise((_, r) => r(networkErrorBody()));
             sandbox.stub(axios, 'get').returns(rejected);
