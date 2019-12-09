@@ -3,7 +3,13 @@
 <head>
     <title>Test</title>
     <meta charset="utf-8">
+
+    <!--Scripts-->
+    <script src="responseExamples.js"></script>
     <script src="../src/index.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
 
     <!--Testing-->
@@ -12,16 +18,133 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/7.5.0/sinon.min.js"></script>
 
+    <script id="entry_template_result" type="text/x-handlebars-template">
+        <div>
+            <h1 class="city_name">{{city}}</h1>
+        </div>
+        <ul class="weather_info">
+            <li class="list_item"><p class="list_item_name">temperature:</p> {{temperature}}</li>
+            <li class="list_item"><p class="list_item_name">humidity:</p> {{humidity}}</li>
+            <li class="list_item"><p class="list_item_name">pressure:</p> {{pressure}}</li>
+            <li class="list_item"><p class="list_item_name">wind:</p> {{wind}}</li>
+        </ul>
+    </script>
+
+    <script id="entry_template_on_error" type="text/x-handlebars-template">
+        <div>
+            <h1 class="message">{{message}}</h1>
+        </div>
+    </script>
+
 </head>
 <body>
+<form id="search_form" action="#">
+    <input type="text" id="form_input" class="submit_input" value="Kiev">
+    <input id="search" type="submit" class="submit_button" value="submit">
+</form>
+<div id="result" class="weather"></div>
 <div id="mocha"></div>
 <script>
     expect = chai.expect;
 
     describe("formatData", function () {
-        it('formatData', function () {
-            let testResponse = formatData(responseExample());
+        it('formatData works correctly', function () {
+            let testResponse = formatData(dataExample());
             expect(testResponse).to.eql(formattedResponse());
+        });
+    });
+
+    describe("compileTemplate", function () {
+        it('weather.status === 200', function () {
+            let testResponse = compileTemplate(fullExample());
+            expect(testResponse).to.eql(formattedResponse());
+        });
+
+        it('weather.status !== 200', function () {
+            let testResponse = compileTemplate(errorExample());
+            expect(testResponse).to.eql(errorResponse());
+        });
+    });
+
+    describe("getCityData", function () {
+        let sandbox;
+        beforeEach(() => sandbox = sinon.createSandbox());
+        afterEach(() => sandbox.restore());
+
+        it('Syktyvkar', function (done) {
+            const response = fullExample();
+            const resolved = new Promise((r) => r(response));
+            sandbox.stub(axios, 'get').returns(resolved);
+
+            getCityData("Syktyvkar")
+                .then((res) => {
+                    expect(res).to.eql(response)
+                })
+                .then(done, done);
+        });
+
+        it('Empty request', function (done) {
+            const response = nothingToGeocodeData();
+            const rejected = new Promise((_, r) => r({ response: response }));
+            sandbox.stub(axios, 'get').returns(rejected);
+
+            getCityData("")
+                .then((res) => {
+                    expect(res).to.eql(response)
+                })
+                .then(done, done);
+        });
+
+        it('City ​​not found', function (done) {
+            const response = cityNotFoundData();
+            const rejected = new Promise((_, r) => r({ response: response }));
+            sandbox.stub(axios, 'get').returns(rejected);
+
+            getCityData("sbfjbsdjfbsdjf")
+                .then((res) => {
+                    expect(res).to.eql(response)
+                })
+                .then(done, done);
+        });
+
+        it('Invalid API key', function (done) {
+            const response = invalidApiKeyData();
+            const rejected = new Promise((_, r) => r({response: response}));
+            sandbox.stub(axios, 'get').returns(rejected);
+
+            getCityData("Syktyvkar")
+                .then((res) => {
+                    expect(res).to.eql(response)
+                })
+                .then(done, done);
+        });
+
+        it('Network error', function (done) {
+            const response = networkErrorData();
+            const rejected = new Promise((_, r) => r(networkErrorBody()));
+            sandbox.stub(axios, 'get').returns(rejected);
+
+            getCityData("Syktivkar")
+                .then((res) => {
+                    expect(res).to.eql(response)
+                })
+                .then(done, done);
+        });
+    });
+    
+    describe("submit form", function () {
+        it('should exist', () => {
+            expect(document.getElementById('search_form')).to.exist;
+        });
+
+        it('should fire a update event with correct data', function () {
+            const formSubmitSpy = sinon.spy(update);
+            document.getElementById('search_form').submit();
+
+            expect(formSubmitSpy.callCount).to.equal(0);
+
+            /*const spyCall = formSubmitSpy.getCall(0);
+            expect(spyCall.args[1].foo).to.equal('bar');*/
         });
     });
 
