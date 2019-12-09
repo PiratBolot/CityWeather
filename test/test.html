@@ -138,13 +138,10 @@
         });
 
         it('should fire a update event with correct data', function () {
-            const formSubmitSpy = sinon.spy(update);
-            document.getElementById('search_form').submit();
+            const formSubmitSpy = sinon.spy(window, "update");
+            document.getElementById('search').click();
 
-            expect(formSubmitSpy.callCount).to.equal(0);
-
-            /*const spyCall = formSubmitSpy.getCall(0);
-            expect(spyCall.args[1].foo).to.equal('bar');*/
+            expect(formSubmitSpy.callCount).to.equal(1);
         });
     });
 
