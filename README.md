@@ -7,3 +7,6 @@ To built project run:
 To run development server:
 
     npm start
+To test project run:
+
+    npm test
