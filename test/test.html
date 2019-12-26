@@ -19,7 +19,7 @@
 
     <script id="entry_template_result" type="text/x-handlebars-template">
         <div>
-            <h1 class="city_name">{{city}}</h1>
+            <h1 class="city_name" id="name_city">{{city}}</h1>
         </div>
         <ul class="weather_info">
             <li class="list_item"><p class="list_item_name">temperature:</p> {{temperature}}</li>
@@ -31,7 +31,7 @@
 
     <script id="entry_template_on_error" type="text/x-handlebars-template">
         <div>
-            <h1 class="message">{{message}}</h1>
+            <h1 class="message" id="error_message">{{message}}</h1>
         </div>
     </script>
 
@@ -39,7 +39,7 @@
 <body>
 <form id="search_form" action="#">
     <input type="text" id="form_input" class="submit_input" value="Kiev">
-    <input id="search" type="submit" class="submit_button" value="submit">
+    <input id="search" type="submit" class="btnSubmit" value="submit" />
 </form>
 <div id="result" class="weather"></div>
 <div id="mocha"></div>
@@ -60,7 +60,7 @@
         });
 
         it('should return error response if weather.status !== 200', function () {
-            let testResponse = compileTemplate(errorExample());
+            let testResponse = compileTemplate(networkErrorData());
             expect(testResponse).to.eql(errorResponse());
         });
     });
@@ -83,8 +83,8 @@
         });
 
         it('should handle the empty request option', function (done) {
-            const response = nothingToGeocodeData();
-            const rejected = new Promise((_, r) => r({ response: response }));
+            const response = nothingToGeocodeServerResponse();
+            const rejected = new Promise((_, r) => r({response: response}));
             sandbox.stub(axios, 'get').returns(rejected);
 
             getCityData("")
@@ -95,8 +95,8 @@
         });
 
         it('should handle the city ​​not found option', function (done) {
-            const response = cityNotFoundData();
-            const rejected = new Promise((_, r) => r({ response: response }));
+            const response = cityNotFoundServerResponse();
+            const rejected = new Promise((_, r) => r({response: response}));
             sandbox.stub(axios, 'get').returns(rejected);
 
             getCityData("sbfjbsdjfbsdjf")
@@ -107,7 +107,7 @@
         });
 
         it('should handle the invalid API key option', function (done) {
-            const response = invalidApiKeyData();
+            const response = invalidApiKeyServerResponse();
             const rejected = new Promise((_, r) => r({response: response}));
             sandbox.stub(axios, 'get').returns(rejected);
 
@@ -123,24 +123,113 @@
             const rejected = new Promise((_, r) => r(networkErrorBody()));
             sandbox.stub(axios, 'get').returns(rejected);
 
-            getCityData("Syktivkar")
+            getCityData("Syktyvkar")
                 .then((res) => {
                     expect(res).to.eql(response)
                 })
                 .then(done, done);
         });
     });
-    
+
     describe("submit form", function () {
-        it('should exist', () => {
-            expect(document.getElementById('search_form')).to.exist;
+        const formSubmitSpy = sinon.spy(window, 'requestHandler');
+
+        document.getElementById('form_input').value = "Syktyvkar";
+
+        document.getElementById("search_form").addEventListener('submit', event => {
+            console.log("ОБРАБОТЧИК РОБИТ");
+            event.preventDefault();
+            requestHandler(event).then();
         });
 
-        it('should fire a update event with correct data', function () {
-            const formSubmitSpy = sinon.spy(window, "update");
-            document.getElementById('search').click();
+        let sandbox;
+        beforeEach(() => sandbox = sinon.createSandbox());
+        afterEach(() => sandbox.restore());
 
+        it('form_input is filled', function () {
+            let searchFormInner = document.getElementById('form_input');
+            expect(searchFormInner.value).to.equal("Syktyvkar");
+        });
+
+        it('should exist', () => {
+            let searchForm = document.getElementById('search_form');
+            expect(searchForm).to.exist;
+        });
+
+        it('should fire a update event with correct data (button click)', function (done) {
+            const response = fullExample();
+            const resolved = new Promise((r) => r(response));
+            sandbox.stub(axios, 'get').returns(resolved);
+
+            let searchButton = document.getElementById('search');
+            searchButton.click();
+            done();
+            console.log(formSubmitSpy.callCount);
             expect(formSubmitSpy.callCount).to.equal(1);
+        });
+
+        it('should fire a update event with correct data (form enter)', function (done) {
+            const response = fullExample();
+            const resolved = new Promise((r) => r(response));
+            sandbox.stub(axios, 'get').returns(resolved);
+
+            let searchForm = document.getElementById('search_form');
+            searchForm.submit();
+            done();
+            console.log(formSubmitSpy.callCount);
+            expect(formSubmitSpy.callCount).to.equal(2);
+        });
+    });
+
+    describe("get source", function () {
+        it('should return entry_template_result template if status === 200', function () {
+            let resultTemplate = getSource(200);
+            expect(resultTemplate).to.eql(document.getElementById('entry_template_result').innerHTML);
+        });
+
+        it('should return entry_template_on_error template if status !== 200', function () {
+            let errorTemplate = getSource(300);
+            expect(errorTemplate).to.eql(document.getElementById('entry_template_on_error').innerHTML);
+        });
+    });
+
+    describe("update", function () {
+
+        afterEach(() => {
+            let elem = document.getElementById('error_message');
+            if (document.body.contains(elem)) {
+                elem.parentNode.removeChild(elem);
+            }
+        });
+
+        it('should render city weather data', function () {
+            update(fullExample());
+            let cityElement = document.getElementById('name_city');
+            expect(cityElement.innerHTML).to.equal("Syktyvkar");
+        });
+
+        it('should render message if network error is occured', function () {
+            update(networkErrorData());
+            let errorMessage = document.getElementById('error_message');
+            expect(errorMessage.innerHTML).to.equal("network error");
+        });
+
+        it('should render message if request is empty', function () {
+            update(nothingToGeocodeData());
+            let errorMessage = document.getElementById('error_message');
+            expect(errorMessage.innerHTML).to.equal("Nothing to geocode");
+        });
+
+        it('should render message if city not found', function () {
+            update(cityNotFoundData());
+            let errorMessage = document.getElementById('error_message');
+            expect(errorMessage.innerHTML).to.equal("city not found");
+        });
+
+        it('should render message if API_KEY is invalid', function () {
+            update(invalidApiKeyData());
+            let errorMessage = document.getElementById('error_message');
+            expect(errorMessage.innerHTML).to.equal("Invalid API key. Please see http://openweathermap.org/faq#error401 for more info.");
         });
     });
 

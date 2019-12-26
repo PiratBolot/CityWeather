@@ -118,23 +118,13 @@ const formattedResponse = () => ({
     wind: "2.82 meter/sec",
 });
 
-const errorExample = () => (
-    {
-        "status": 999,
-        "data":
-            {
-                "message": "network error"
-            }
-    }
-);
-
 const errorResponse = () => (
     {
         "message": "network error"
     }
 );
 
-const nothingToGeocodeData = () => (
+const nothingToGeocodeServerResponse = () => (
     {
         response: {
             cod: 400,
@@ -143,7 +133,16 @@ const nothingToGeocodeData = () => (
     }
 );
 
-const cityNotFoundData = () => (
+const nothingToGeocodeData = () => (
+    {
+        status: 400,
+        data: {
+            message: "Nothing to geocode"
+        }
+    }
+);
+
+const cityNotFoundServerResponse = () => (
     {
         response: {
             cod: 404,
@@ -152,10 +151,28 @@ const cityNotFoundData = () => (
     }
 );
 
-const invalidApiKeyData = () => (
+const cityNotFoundData = () => (
+    {
+        status: 404,
+        data: {
+            message: "city not found"
+        }
+    }
+);
+
+const invalidApiKeyServerResponse = () => (
     {
         response: {
             cod: 401,
+            message: "Invalid API key. Please see http://openweathermap.org/faq#error401 for more info."
+        }
+    }
+);
+
+const invalidApiKeyData = () => (
+    {
+        status: 401,
+        data: {
             message: "Invalid API key. Please see http://openweathermap.org/faq#error401 for more info."
         }
     }

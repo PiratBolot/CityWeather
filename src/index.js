@@ -41,7 +41,6 @@ function compileTemplate(weather) {
 }
 
 function update(weather) {
-    console.log(weather);
     const source = getSource(weather.status);
     const template = Handlebars.compile(source);
     document.getElementById('result').innerHTML = template(compileTemplate(weather));
@@ -57,11 +56,19 @@ function getSource(status) {
     return source;
 }
 
+async function requestHandler(event) {
+    console.log("СУКА БЛЯТЬ Я ЗАПУСТИЛСЯ, СИНОН СПУ СУКА НЕ СПИ");
+    let cityName = event.target['form_input'].value;
+    console.log("ОБРАЩАЮСЬ ЗА ДАННЫМИ");
+    let cityWeather = await getCityData(cityName);
+    console.log("ЗАБРАЛ ДАННЫЕ С АПИ");
+    update(cityWeather);
+    console.log("ОБНОВИЛИ ДОМ");
+}
+
 window.onload = () => {
-    document.getElementById("search_form").addEventListener('submit', async event => {
+    document.getElementById("search_form").addEventListener('submit', event => {
         event.preventDefault();
-        let cityName = event.target['form_input'].value;
-        let cityWeather = await getCityData(cityName);
-        update(cityWeather)
+        requestHandler(event).then();
     });
 };
