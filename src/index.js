@@ -1,6 +1,6 @@
-const fg = require('./scss/base.scss');
+require('./scss/base.scss');
 
-const API_KEY = "5c421a898af8f8f0d9a04eb07a32545d";
+var API_KEY = "5c421a898af8f8f0d9a04eb07a32545d";
 
 async function getCityData(city) {
     return axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${API_KEY}&units=metric`)
