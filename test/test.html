@@ -37,9 +37,9 @@
 
 </head>
 <body>
-<form id="search_form" action="#">
-    <input type="text" id="form_input" class="submit_input" value="Kiev">
-    <input id="search" type="submit" class="btnSubmit" value="submit" />
+<form id="search_form" ononsubmit="requestHandler(event)" name="myForm" action="#">
+    <input type="text" id="form_input" class="submit_input" name="myField" value="Kiev">
+    <input id="search" type="submit" class="btnSubmit" name="myBtn" value="submit" />
 </form>
 <div id="result" class="weather"></div>
 <div id="mocha"></div>
@@ -131,52 +131,32 @@
         });
     });
 
-    describe("submit form", function () {
+    describe("form", function () {
         const formSubmitSpy = sinon.spy(window, 'requestHandler');
 
         document.getElementById('form_input').value = "Syktyvkar";
-
-        document.getElementById("search_form").addEventListener('submit', event => {
-            console.log("ОБРАБОТЧИК РОБИТ");
-            event.preventDefault();
-            requestHandler(event).then();
-        });
-
-        let sandbox;
-        beforeEach(() => sandbox = sinon.createSandbox());
-        afterEach(() => sandbox.restore());
 
         it('form_input is filled', function () {
             let searchFormInner = document.getElementById('form_input');
             expect(searchFormInner.value).to.equal("Syktyvkar");
         });
 
-        it('should exist', () => {
+        it('form should exist', () => {
             let searchForm = document.getElementById('search_form');
             expect(searchForm).to.exist;
         });
 
         it('should fire a update event with correct data (button click)', function (done) {
-            const response = fullExample();
-            const resolved = new Promise((r) => r(response));
-            sandbox.stub(axios, 'get').returns(resolved);
-
             let searchButton = document.getElementById('search');
             searchButton.click();
             done();
-            console.log(formSubmitSpy.callCount);
             expect(formSubmitSpy.callCount).to.equal(1);
         });
 
-        it('should fire a update event with correct data (form enter)', function (done) {
-            const response = fullExample();
-            const resolved = new Promise((r) => r(response));
-            sandbox.stub(axios, 'get').returns(resolved);
-
+        it('should fire a update event with correct data (form submit)', function (done) {
             let searchForm = document.getElementById('search_form');
             searchForm.submit();
             done();
-            console.log(formSubmitSpy.callCount);
             expect(formSubmitSpy.callCount).to.equal(2);
         });
     });

@@ -1,5 +1,3 @@
-require('./scss/base.scss');
-
 var API_KEY = "5c421a898af8f8f0d9a04eb07a32545d";
 
 async function getCityData(city) {
@@ -57,18 +55,8 @@ function getSource(status) {
 }
 
 async function requestHandler(event) {
-    console.log("СУКА БЛЯТЬ Я ЗАПУСТИЛСЯ, СИНОН СПУ СУКА НЕ СПИ");
+    event.preventDefault();
     let cityName = event.target['form_input'].value;
-    console.log("ОБРАЩАЮСЬ ЗА ДАННЫМИ");
     let cityWeather = await getCityData(cityName);
-    console.log("ЗАБРАЛ ДАННЫЕ С АПИ");
     update(cityWeather);
-    console.log("ОБНОВИЛИ ДОМ");
 }
-
-window.onload = () => {
-    document.getElementById("search_form").addEventListener('submit', event => {
-        event.preventDefault();
-        requestHandler(event).then();
-    });
-};

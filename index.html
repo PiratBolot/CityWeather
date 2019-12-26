@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.2.0/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <link rel='stylesheet' href='dist/style.css'>
+    <script type="text/javascript" src="./src/index.js"></script>
 
     <script id="entry_template_result" type="text/x-handlebars-template">
         <div>
@@ -29,7 +30,7 @@
 <body>
     <main class="main">
         <div class="search">
-            <form id="search_form" action="#">
+            <form id="search_form" onsubmit="requestHandler(event)" action="#">
                 <input type="text" id="form_input" class="submit_input" value="Kiev">
                 <input id="search" type="submit" class="btnSubmit" value="submit" />
             </form>
