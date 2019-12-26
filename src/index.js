@@ -40,11 +40,11 @@ function compileTemplate(weather) {
     return weather.data;
 }
 
-function update(cityWeather) {
-    console.log(cityWeather);
-    const source = getSource(cityWeather.status);
+function update(weather) {
+    console.log(weather);
+    const source = getSource(weather.status);
     const template = Handlebars.compile(source);
-    document.getElementById('result').innerHTML = template(compileTemplate(cityWeather));
+    document.getElementById('result').innerHTML = template(compileTemplate(weather));
 }
 
 function getSource(status) {
